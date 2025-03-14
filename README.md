@@ -77,17 +77,62 @@ cd obs_activity_classifier
 pip install -r requirements.txt
 ```
 
-3. Configuration d'OBS Studio :
-   - Installez le plugin [obs-websocket](https://github.com/obsproject/obs-websocket/releases)
-   - Dans OBS, allez dans Tools > WebSockets Server Settings
-   - Activez le serveur WebSocket
-   - Configurez le port (par défaut: 4444) et définissez un mot de passe si nécessaire
+3. Configuration d'OBS Studio (instructions détaillées ci-dessous)
 
 4. Configurez l'application :
    - Modifiez le fichier `server/config.py` pour définir :
      - Les paramètres de connexion à OBS (hôte, port, mot de passe)
      - L'URL du service externe
      - Les autres paramètres selon vos besoins
+
+## Configuration détaillée d'OBS Studio
+
+Pour que OBS Studio fonctionne correctement avec cette application, suivez ces étapes précises :
+
+1. **Installer le plugin obs-websocket** :
+   - Téléchargez la dernière version compatible avec votre version d'OBS sur https://github.com/obsproject/obs-websocket/releases
+   - Suivez les instructions d'installation spécifiques à votre système d'exploitation
+   - Redémarrez OBS après l'installation
+
+2. **Activer et configurer le serveur WebSocket dans OBS** :
+   - Lancez OBS Studio
+   - Allez dans le menu "Outils" (ou "Tools") > "WebSockets Server Settings"
+   - Cochez la case "Enable WebSockets Server"
+   - Configurez les paramètres suivants :
+     - Port : 4444 (par défaut, ou choisissez un autre port si nécessaire)
+     - Mot de passe : définissez un mot de passe si vous souhaitez sécuriser la connexion
+   - Cliquez sur "OK" pour enregistrer les paramètres
+
+3. **Configurer les sources vidéo et audio appropriées** :
+   - Créez une scène dédiée pour la capture d'activité
+   - Ajoutez une source de capture vidéo :
+     - "Capture de périphérique vidéo" pour une webcam
+     - ou "Capture d'écran" pour analyser ce qui se passe sur votre écran
+   - Ajoutez une source audio :
+     - "Capture audio d'entrée" pour un microphone
+     - et/ou "Capture audio de sortie" pour l'audio du système
+
+4. **Vérifier que les sources sont actives** :
+   - Assurez-vous que vos sources vidéo et audio ne sont pas muettes ou masquées
+   - Vérifiez que les dispositifs de capture fonctionnent correctement
+
+5. **Configuration recommandée pour de meilleures performances** :
+   - Résolution vidéo : configurez une résolution moyenne (640x480 ou 720p) pour réduire la charge de traitement
+   - Fréquence d'images : 15-30 FPS est suffisant pour l'analyse d'activité
+   - Qualité audio : 44.1kHz, Mono est généralement suffisant
+
+6. **Mettre à jour la configuration du programme** :
+   - Modifiez le fichier `server/config.py` pour correspondre à vos paramètres OBS :
+     ```python
+     OBS_HOST = 'localhost'  # ou l'adresse IP si OBS est sur une autre machine
+     OBS_PORT = 4444  # le port que vous avez configuré
+     OBS_PASSWORD = 'votre-mot-de-passe'  # laissez vide si vous n'avez pas défini de mot de passe
+     ```
+
+7. **Test de connexion** :
+   - Lancez OBS Studio
+   - Lancez votre application OBS Activity Classifier
+   - Vérifiez les journaux de l'application pour confirmer que la connexion est établie
 
 ## Utilisation
 
@@ -190,6 +235,8 @@ Modifiez la classe `ExternalServiceClient` pour adapter le format des données e
 - Vérifiez que le plugin obs-websocket est correctement installé et activé
 - Assurez-vous que le port n'est pas bloqué par un pare-feu
 - Vérifiez que les identifiants de connexion dans `config.py` correspondent
+- Lancez OBS avant de démarrer l'application OBS Activity Classifier
+- Consultez les journaux de l'application pour identifier les problèmes de connexion spécifiques
 
 ### Erreurs de classification
 
